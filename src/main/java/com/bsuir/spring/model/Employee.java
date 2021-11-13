@@ -23,11 +23,7 @@ public class Employee {
     private String name;
     @Enumerated(EnumType.STRING)
     private EmployeeRole employeeRole;
-    @ManyToMany
-    @JoinTable(
-            name = "movie_employee_relationship",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    @ManyToMany(mappedBy = "employees")
     private Set<Movie> movies;
 
     public Employee() {
@@ -77,5 +73,10 @@ public class Employee {
 
     public void setEmployeeRole(EmployeeRole employeeRole) {
         this.employeeRole = employeeRole;
+    }
+
+    @Override
+    public String toString() {
+        return surname + ' ' + name + ' ' + employeeRole;
     }
 }

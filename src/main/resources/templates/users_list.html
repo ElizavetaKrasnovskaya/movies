@@ -39,10 +39,9 @@
 <br>
 
 <div class="container my-2">
-    <h1>Movies List</h1>
+    <h1>Users List</h1>
 
-    <a th:href="@{/showNewMovieForm}" class="btn btn-primary btn-sm mb-3"> Add
-        Movie </a>
+    <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/showNewUserForm}" class="btn btn-primary btn-sm mb-3"> Add User </a>
 
     <br/>
     <br/>
@@ -50,46 +49,27 @@
         <thead>
         <tr>
             <th>
-                <a th:href="@{'/pageBook/' + ${currentPage} + '?sortField=title&sortDir=' + ${reverseSortDir}}">
-                    Title</a>
+                <a th:href="@{'/pageUser/' + ${currentPage} + '?sortField=username&sortDir=' + ${reverseSortDir}}">
+                    Username</a>
             </th>
             <th>
-                <a th:href="@{'/pageBook/' + ${currentPage} + '?sortField=description&sortDir=' + ${reverseSortDir}}">
-                    Description</a>
+                <a th:href="@{'/pageUser/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}}">
+                    Email</a>
             </th>
             <th>
-                <a th:href="@{'/pageBook/' + ${currentPage} + '?sortField=date&sortDir=' + ${reverseSortDir}}">
-                    Year of publishing</a>
+                <a th:href="@{'/pageUser/' + ${currentPage} + '?sortField=roles&sortDir=' + ${reverseSortDir}}">
+                    Role</a>
             </th>
-            <th>
-                <a th:href="@{'/pageBook/' + ${currentPage} + '?sortField=country&sortDir=' + ${reverseSortDir}}">
-                    Country</a>
-            </th>
-            <th>
-                <a th:href="@{'/pageBook/' + ${currentPage} + '?sortField=employees&sortDir=' + ${reverseSortDir}}">
-                    Employees</a>
-            </th>
-            </th>
-            <th> Actions</th>
+            <th sec:authorize="hasAnyAuthority('ADMIN')"> Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="movie : ${listMovies}">
-
-            <td th:text="${movie.title}"></td>
-            <td th:text="${movie.description}"></td>
-            <td th:text="${movie.date}"></td>
-            <td th:text="${movie.country}"></td>
-<!--            <td th:text="${employee.surname} + ' ' + ${employee.name} + ' ' + ${employee.employeeRole}"></td>-->
-            <td th:text="${movie.employees}">
-<!--                <div th:text="${empl.surname} + ' ' + ${empl.name} + ' ' + ${empl.employeeRole}"/>-->
-            </td>
-<!--            <td><a th:href="@{/addBookToCabinet/{id}(id=${book.id})}"-->
-<!--                   class="btn btn-primary">Read</a>-->
-<!--            </td>-->
-            <td><a th:href="@{/showMovieFormForUpdate/{id}(id=${movie.id})}"
-                   class="btn btn-primary">Update</a>
-                <a th:href="@{/deleteMovie/{id}(id=${movie.id})}" class="btn btn-danger">Delete</a>
+        <tr th:each="user : ${listUsers}">
+            <td style="word-wrap: break-word;" th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.roles}"></td>
+            <td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/showUserFormForUpdate/{id}(id=${user.id})}" class="btn btn-primary">Update</a>
+                <a th:href="@{/deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
             </td>
         </tr>
         </tbody>
@@ -100,19 +80,19 @@
             <div class="col-sm-1">
 					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
 						<a th:if="${currentPage != i}"
-                           th:href="@{'/pageMovie/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                           th:href="@{'/pageUser/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
 						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
 					</span>
             </div>
             <div class="col-sm-1">
                 <a th:if="${currentPage < totalPages}"
-                   th:href="@{'/pageMovie/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                   th:href="@{'/pageUser/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
                 <span th:unless="${currentPage < totalPages}">Next</span>
             </div>
 
             <div class="col-sm-1">
                 <a th:if="${currentPage < totalPages}"
-                   th:href="@{'/pageMovie/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+                   th:href="@{'/pageUser/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
                 <span th:unless="${currentPage < totalPages}">Last</span>
             </div>
         </div>

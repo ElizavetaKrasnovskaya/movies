@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Movies</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <h1>Movie Management System</h1>
+    <hr>
+    <h2>Save Movie</h2>
+
+    <form action="#" th:action="@{/saveMovie}" th:object="${movie}"
+          method="POST">
+        <input maxlength="30" minlength="4" required type="text" th:field="*{title}"
+               placeholder="Title" class="form-control mb-4 col-4">
+
+        <input max="2021" min="1000" required type="number"  th:field="*{date}"
+               placeholder="Year of publishing" class="form-control mb-4 col-4">
+
+        <input maxlength="30" minlength="4" required type="text" th:field="*{description}"
+               placeholder="Description" class="form-control mb-4 col-4">
+
+        <input maxlength="30" minlength="4" required type="text" th:field="*{country}"
+               placeholder="Country" class="form-control mb-4 col-4">
+
+        <div class="form-group">
+            <label for="authors">Choose employee</label>
+            <select required th:field="*{employees}" class="form-control mb-4 col-4 selectpicker" id="authors">
+                <option value="">Nothing selected</option>
+                <option th:each="employee : ${employeesList}"
+                        th:value="${employee.id}"
+                        th:text="${employee.surname } + ' ' + ${employee.name} + ' ' + ${employee.employeeRole}">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-info col-2"> Save Movie</button>
+    </form>
+
+    <hr>
+
+    <a th:href="@{/}"> Back to Movie List</a>
+</div>
+</body>
+</html>

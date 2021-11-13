@@ -31,7 +31,7 @@ public class FilmsController {
 
     @GetMapping("/")
     public String viewHomePage(Model model) {
-        return "index";
+        return findPaginated(1, "title", "asc", model);
     }
 
     @GetMapping("/showNewMovieForm")
