@@ -28,6 +28,9 @@
             <input maxlength="30" minlength="4" required type="text" th:field="*{country}"
                    placeholder="Country" class="form-control mb-4 col-4">
 
+            <input th:field="*{rating}"
+                   placeholder="Rating" class="form-control mb-4 col-4">
+
             <div class="form-group">
                 <label for="authors">Choose employee</label>
                 <select required th:field="*{employees}" class="form-control mb-4 col-4 selectpicker" id="authors">

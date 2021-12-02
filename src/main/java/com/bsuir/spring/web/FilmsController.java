@@ -49,6 +49,23 @@ public class FilmsController {
         return "redirect:/";
     }
 
+    @GetMapping("/showMovieFormForUpdateRating/{id}")
+    public String showMovieFormForUpdateRating(@PathVariable(value = "id") int id, Model model) {
+        Movie movie = movieService.getMovieById(id);
+        model.addAttribute("movie", movie);
+        return "update_rating";
+    }
+
+    @PostMapping("/updateRating")
+    public String updateRating(@ModelAttribute("movie") Movie movie) {
+        System.out.println(movie.getId());
+        Movie movie1 = movieService.getMovieById(movie.getId());
+        double rating = (movie1.getRating() + movie.getRating()) / 2;
+        movie.setRating(rating);
+        movieService.saveMovie(movie);
+        return "redirect:/";
+    }
+
     @GetMapping("/showMovieFormForUpdate/{id}")
     public String showMovieFormForUpdate(@PathVariable(value = "id") int id, Model model) {
         Movie movie = movieService.getMovieById(id);

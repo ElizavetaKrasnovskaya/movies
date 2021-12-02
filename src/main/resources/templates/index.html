@@ -66,11 +66,15 @@
                     Country</a>
             </th>
             <th>
+                <a th:href="@{'/pageBook/' + ${currentPage} + '?sortField=country&sortDir=' + ${reverseSortDir}}">
+                    Rating</a>
+            </th>
+            <th>
                 <a th:href="@{'/pageBook/' + ${currentPage} + '?sortField=employees&sortDir=' + ${reverseSortDir}}">
                     Employees</a>
             </th>
             </th>
-            <th sec:authorize="hasAnyAuthority('ADMIN')"> Actions</th>
+            <th> Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -80,10 +84,14 @@
             <td th:text="${movie.description}"></td>
             <td th:text="${movie.date}"></td>
             <td th:text="${movie.country}"></td>
+            <td th:text="${movie.rating}"></td>
             <td th:text="${movie.employees}"></td>
             <td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/showMovieFormForUpdate/{id}(id=${movie.id})}"
                    class="btn btn-primary">Update</a>
                 <a th:href="@{/deleteMovie/{id}(id=${movie.id})}" class="btn btn-danger">Delete</a>
+            </td>
+            <td sec:authorize="hasAnyAuthority('USER')"><a th:href="@{/showMovieFormForUpdateRating/{id}(id=${movie.id})}"
+                                                            class="btn btn-primary">Update rating</a>
             </td>
         </tr>
         </tbody>

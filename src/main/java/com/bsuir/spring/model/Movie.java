@@ -23,6 +23,7 @@ public class Movie {
     private int date;
     private String description;
     private String country;
+    private double rating;
     @ManyToMany
     @JoinTable(
             name = "movie_employee_relationship",
@@ -33,11 +34,12 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(String title, int date, String description, String country) {
+    public Movie(String title, int date, String description, String country, double rating) {
         this.title = title;
         this.date = date;
         this.description = description;
         this.country = country;
+        this.rating = rating;
     }
 
     public int getId() {
@@ -86,5 +88,13 @@ public class Movie {
 
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }
