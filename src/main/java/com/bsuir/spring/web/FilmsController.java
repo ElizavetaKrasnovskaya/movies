@@ -2,8 +2,10 @@ package com.bsuir.spring.web;
 
 import com.bsuir.spring.model.Employee;
 import com.bsuir.spring.model.Movie;
+import com.bsuir.spring.model.Rating;
 import com.bsuir.spring.service.employee.EmployeeService;
 import com.bsuir.spring.service.movie.MovieService;
+import com.bsuir.spring.service.rating.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class FilmsController {
@@ -23,6 +26,8 @@ public class FilmsController {
     private MovieService movieService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private RatingService ratingService;
 
     @GetMapping("/login")
     public String login() {
@@ -58,10 +63,19 @@ public class FilmsController {
 
     @PostMapping("/updateRating")
     public String updateRating(@ModelAttribute("movie") Movie movie) {
-        System.out.println(movie.getId());
-        Movie movie1 = movieService.getMovieById(movie.getId());
-        double rating = (movie1.getRating() + movie.getRating()) / 2;
-        movie.setRating(rating);
+        Rating rating = new Rating(movie.getRating(), movie);
+        Set<Rating> ratingSet = movie.getRatings();
+        ratingSet.add(rating);
+        movie.setRatings(ratingSet);
+        double r = 0;
+        for (Rating ratings : movie.getRatings()) {
+            r += ratings.getRating();
+        }
+        if (!movie.getRatings().isEmpty()) {
+            r /= movie.getRatings().size();
+        }
+        movie.setRating(r);
+        ratingService.saveRating(rating);
         movieService.saveMovie(movie);
         return "redirect:/";
     }

@@ -1,7 +1,9 @@
 package com.bsuir.spring.service.movie;
 
 import com.bsuir.spring.model.Movie;
+import com.bsuir.spring.model.Rating;
 import com.bsuir.spring.repository.MovieRepository;
+import com.bsuir.spring.service.rating.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -17,14 +20,35 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private RatingService ratingService;
+
     @Override
     public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+        List<Movie> movies = movieRepository.findAll();
+        double rating = 0;
+        for (Movie movie : movies) {
+            for (Rating ratings : movie.getRatings()) {
+                rating += ratings.getRating();
+            }
+            if (!movie.getRatings().isEmpty()) {
+                rating /= movie.getRatings().size();
+            }
+            movie.setRating(rating);
+        }
+        return movies;
     }
 
     @Override
     public void saveMovie(Movie movie) {
-        movieRepository.save(movie);
+        if(movie.getRatings() == null) {
+            Rating rating = new Rating(movie.getRating(), movie);
+            movie.setRatings(Set.of(rating));
+            movieRepository.save(movie);
+            ratingService.saveRating(rating);
+        }else{
+            movieRepository.save(movie);
+        }
     }
 
     @Override
